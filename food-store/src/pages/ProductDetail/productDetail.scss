@@ -1,0 +1,107 @@
+.product-detail{
+    padding: 20px 10px;
+    margin-bottom: 40px;
+    .product-image{
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        padding-bottom: 100%;
+        background-color: #f7f4ef;
+        border-radius: 20px;
+    }
+    .product-content{
+        padding: 15px;
+        .product-price{
+            color: var(--main-color);
+            font-weight: 700;
+            font-size: 30px;
+            margin: 10px 0 0 0;
+        }
+      
+        .product-added-to-cart{
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+            .product-quantity-added{
+                display: flex;
+                align-items: center;
+                .quantity--minus,
+                .quantity--plus{
+                    background-color: #f7f4ef;
+                    border-radius: 50%;
+                    width: 30px;
+                    height: 30px;
+                    color: black;
+                    font-weight: 500;
+                    &:hover{
+                        color: var(--main-color);
+                    }
+                }
+                .quantity--number{
+                    margin: 0 10px;
+                }
+            }
+            .product-addToCart--button{
+                font-size: 12px;
+                color: black;
+                font-weight: 700;
+                background-color: var(--main-color);
+                padding: 15px 40px;
+                border-radius: 10px;
+                text-transform: uppercase;
+            }
+        }
+        .product-extra-info{
+            li{
+                color: #8b8b8b;
+            }
+        }
+    }
+    .tab-list{
+        border: none;
+        padding: 10px;
+        margin: auto;
+        width: auto;
+        align-items: center;
+        button{
+            margin: 0 10px;
+            border: none;
+            color: black;
+            font-weight: 500;
+            font-size: 20px;
+            padding: 15px 30px;
+            border-radius: 10px;
+        }
+        button.active{
+            background-color: var(--main-color);
+        }
+    }
+    .product-related{
+        margin-top: 40px;
+        .slick-next,
+        .slick-prev{
+            z-index: 1;
+            width: 40px;
+            height: 40px;
+        }
+        .slick-prev{
+            left: 8px;
+        }
+        .slick-next{
+            right: 8px;
+        }
+        .slick-prev:before,
+        .slick-next:before {
+            color: #8b8b8b;
+            font-size: 40px;
+        }
+        .product-related-item{
+            padding: 0 10px;
+        }
+    }
+
+}

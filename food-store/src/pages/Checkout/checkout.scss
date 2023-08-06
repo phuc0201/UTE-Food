@@ -1,0 +1,119 @@
+
+#checkout{
+    margin-top: 40px;
+    .form-gr{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        transition: all ease 0.35s;
+        label{
+            font-weight: 400;
+        }
+        input{
+            margin-top: 5px;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            outline: none;
+            &:focus{
+                border-color: var(--main-color);
+            }
+        }
+    }
+    #order-review{
+        border: 5px solid var(--border-color);
+        padding: 40px;
+        table{
+            width: 100%;
+            td{padding: 15px 0;}
+            th{
+                padding: 15px 0;
+            }
+            thead{
+                th{
+                    font-weight: 500;
+                    text-align: right;
+                    &:first-child{
+                    text-align: left;
+                    }  
+                }
+            }
+            tbody{
+                tr{
+                    border-top: 1px solid var(--border-color);
+                }
+                .product-price{
+                    text-align: right;
+                }
+                .product-name{
+                    text-align: left;
+                }
+            }
+            tfoot{
+                tr{
+                    border-top: 1px solid var(--border-color);
+                }
+                th,td{
+                    font-weight: 500;
+                }
+                th{text-align: left;}
+                td{text-align: right;}
+            }
+        }
+        ul{
+            padding: 0;
+            li{
+                align-items: center;
+                list-style: none;
+                padding: 10px 0;
+                width: 100%;
+                input,label{
+                    cursor: pointer;
+                }
+                input[type=radio]{
+                    display: none;
+                    &:checked + label{
+                        &::after{
+                            background-color: var(--main-color);
+                            border-color: transparent;
+                        }
+                    }
+                }
+                label{
+                    position: relative;
+                    font-size: 16x;
+                    font-weight: 500;
+                    vertical-align: middle;
+                    margin-left: 30px;
+                    &::after{
+                        content: "";
+                        vertical-align: middle;
+                        border-radius: 50%;
+                        position: absolute;
+                        top: 50%;
+                        -webkit-transform: translateY(-50%);
+                        -moz-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                        left: -30px;
+                        width: 20px;
+                        height: 20px;
+                        border: 1px solid black;
+                   }
+
+                }
+            }
+        }
+    }
+    .placeOrder--button{
+        width: 100%;
+        padding: 20px;
+        background-color: var(--main-color);
+        font-weight: 500;
+        font-size: 20px;
+        border-radius: 10px;
+        &:hover{
+            color: #fff;
+        }
+    }
+}

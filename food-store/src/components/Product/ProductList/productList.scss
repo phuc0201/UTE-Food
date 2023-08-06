@@ -1,0 +1,41 @@
+@import '../../../responsive.scss';
+.pagination--button {
+    padding: 0;
+    width: 80%;
+    height: 40px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin-top: 30px;
+  }
+  
+.pagination--button a {
+    padding: 5px 15px;
+    font-weight: 500;
+    background: var(--main-color);
+    color: #fff !important;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 5px;
+    border: 1px solid transparent;
+}
+  
+.pagination--button a:hover {
+    background: #fff;
+    border-color: var(--main-color);
+    color: black !important;
+}
+.productList{
+    .row{
+        @include lg{
+            .col-lg-2-4{
+                width: 20%;
+            }
+        }
+    }
+}

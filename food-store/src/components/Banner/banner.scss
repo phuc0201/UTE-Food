@@ -1,0 +1,21 @@
+@import '../../responsive.scss';
+.banner{
+    display: none;
+    
+    @include lg{
+        display: block;
+        padding: 0 10px;
+        max-width: 1200px;
+    }
+    .banner-item{
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% auto;
+        height: 50vh;
+    }
+    .slick-prev:before,
+    .slick-next:before {
+        color: rgba(0,0,0,0.2);
+        display: none;
+    }
+}

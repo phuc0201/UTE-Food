@@ -1,0 +1,158 @@
+@import '../../responsive.scss';
+#auth{
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #f0f2f5;
+    display: flex;
+    #auth-form{
+        margin: auto;
+        display: flex;
+        background-color: #fff;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        border-radius: 15px;
+        padding: 25px;
+        @include sm{
+            .title{
+                display: none;
+            }
+        }
+        h1{
+            color: var(--main-color);
+        }
+        span{
+            font-size: 30px;
+            color: black;
+        }
+        #login-form,
+        #signup-form{
+            background-color: #f0f2f5;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            @include lg{
+                min-width: 350px;
+            }
+        }
+        #login-form{
+            input[name="password"]{
+                margin-bottom: 4px !important;
+            }
+            .message{
+                font-size: 15px;
+                line-height: 15px;
+                margin-bottom: 10px;
+                margin-left: 4px;
+                color: var(--error-color);
+            }
+            a{
+                font-size: 15px;
+                color: #1877f2;
+                margin: 10px auto;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+            .signup--button{
+                background-color: #fff;
+                font-weight: 500;
+                border-radius: 10px;
+                padding: 15px;
+                border: 1px solid var(--main-color);
+                transition: all ease .1s;
+                width: 100%;
+                margin: 0 auto;
+                &:hover{
+                    width: 98%;
+                }
+            }
+            .login--button{
+                &:hover{
+                    color: #fff;
+                    width: 98%;
+                }
+                margin: 0 auto;
+                width: 100%;
+                transition: all ease .1s;
+                color: black;
+                font-weight: 500;
+                padding: 15px;
+                border-radius: 10px;
+                background-color: var(--main-color);
+            }
+        }
+        #signup-form{
+            .login--button,
+            .signup--button{
+                background-color: #fff;
+                font-weight: 500;
+                border-radius: 10px;
+                padding: 15px;
+                transition: all ease .1s;
+                width: 100%;
+                margin: 0 auto;
+                &:hover{
+                    width: 98%;
+                }
+            }
+            .login--button{
+                border: 1px solid var(--main-color);
+            }
+            .signup--button{
+                background-color: var(--main-color);
+                margin-bottom: 20px;
+            }
+            #gender{
+                display: flex;
+                margin-bottom: 10px;
+                #gender-option{
+                    background-color: #fff;
+                    margin-right: 10px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    display: flex;
+                    justify-content: space-between;
+                    min-width: 100px;
+                    border: 1px solid var(--border-color);
+                    input[name=gender]{
+                        margin: auto 0;
+                    }
+                }
+            }
+            #dateOfBirth{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                margin-left: -4px;
+                margin-right: -4px;
+                div{
+                    flex: 1;
+                    padding: 0 4px;
+                    select{
+                        width: 100%;
+                        border: 1px solid var(--border-color);
+                        border-radius: 5px;
+                        padding: 8px 0;
+                        outline: none;
+                    }
+                }
+            }
+        }
+        input{
+            margin-bottom: 10px;
+            outline: none;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            transition: all ease .1s;
+            &:focus{
+                border: 2px solid var(--main-color);
+            }
+        }
+    }
+}

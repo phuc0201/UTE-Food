@@ -1,0 +1,24 @@
+.categories{
+    .slick-next,
+    .slick-prev{
+        z-index: 1;
+        width: 40px;
+        height: 40px;
+    }
+    .slick-prev{
+        left: 8px;
+    }
+    .slick-next{
+        right: 8px;
+    }
+    .slick-prev:before,
+    .slick-next:before {
+        color: #8b8b8b3f;
+        font-size: 40px;
+    }
+}
+
+// .slick-prev:before,
+// .slick-next:before {
+//     color: rgba(0,0,0,0.2);
+// }
