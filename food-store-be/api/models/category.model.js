@@ -1,7 +1,7 @@
 const db = require('../models/index')
 module.exports = (sequelize, Sequelize, DataTypes)=>{
     const Category = sequelize.define(
-        "category", // Model name
+        "categories", // Model name,
         {
           // Attributes
             id: {
@@ -10,18 +10,19 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
                 primaryKey: true
             },
             category_name: {
-            type: DataTypes.STRING,
-            unique: true
+              type: DataTypes.STRING,
+              unique: true
             },
             image : {
-            type: DataTypes.STRING,
-            defaultValue: ""
+              type: DataTypes.STRING,
+              defaultValue: ""
             },
             isDelete: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
+              type: DataTypes.BOOLEAN,
+              defaultValue: false
             }
-        }
+        }, 
+        { timestamps: false }
       );
   
       return Category;

@@ -1,10 +1,13 @@
 const userController = require('../controllers/user.controller')
+const categoryController = require('../controllers/category.controller')
+const productController = require('../controllers/product.controller')
 const verify = require('../middlewares/auth').verifyToken_User
 const router = require('express').Router()
+
 module.exports = (app) =>{
-    // get profile
-    router.get("/profile", verify, userController.findByid);
-    //update profile
-    router.put('/profile', verify, userController.updateProfile)
-    app.use('', router)
+    router.get("/profile", userController.findByid);
+    router.put('/profile', userController.updateProfile)
+    router.get("/categories", categoryController.findAll);
+    router.get('/product', productController.findAll)
+    app.use('', verify,router)
 }

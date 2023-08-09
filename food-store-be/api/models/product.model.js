@@ -1,7 +1,7 @@
 const db = require('../models/index')
 module.exports = (sequelize, Sequelize, DataTypes)=>{
     const Product = sequelize.define(
-        "product",
+        "products",
         {
             id : {
                 type: DataTypes.UUID,
@@ -37,4 +37,5 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
             }
         }
     )
+    return Product;
 }
