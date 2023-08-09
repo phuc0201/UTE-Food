@@ -9,6 +9,11 @@ const upload = multer({
 })
 module.exports = (app)=>{
     router.get('/users', user_controller.findAll);
+    // create cate
     router.post('/categories', upload.single('file'), uploadImg.uploadImgToFirebase, categoryController.create) 
+    // update cate
+    router.put('/categories', upload.single('file'), uploadImg.uploadImgToFirebase, categoryController.update)
+    //delete cate
+    router.delete('/categories', categoryController.delete)
     app.use('/admin', verify, router);
 }

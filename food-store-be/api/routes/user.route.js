@@ -6,8 +6,9 @@ const router = require('express').Router()
 
 module.exports = (app) =>{
     router.get("/profile", userController.findByid);
-    router.put('/profile', userController.updateProfile)
+    router.put('/profile', userController.updateProfile);
     router.get("/categories", categoryController.findAll);
+    router.get("/categories/:id", categoryController.findById);
     router.get('/product', productController.findAll)
     app.use('', verify,router)
 }

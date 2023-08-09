@@ -1,3 +1,4 @@
+
 const db = require('../models/index');
 
 module.exports = {
@@ -17,6 +18,17 @@ module.exports = {
             })
         })
         
+    },
+    findById : (req, res)=>{
+        db.category.findByPk(req.params.id)
+        .then(data =>{
+            return res.status(200).send(data)
+        })
+        .catch(err=>{
+            return res.status(500).send({
+                message: "find by id failed"
+            })
+        })
     },
     create : (req, res) => {
         if (!req.body.category_name) {
@@ -56,4 +68,38 @@ module.exports = {
             });
         });
     },
+    update : (req, res) =>{
+        const image = req.image ? req.image : '';
+        const {id, category_name} = req.body;
+        const newCategory = { category_name }
+        if(image!=''){
+            newCategory.image = image
+        }
+
+        db.category.update(newCategory, { where : {id : id} })
+        .then(()=>{
+            return res.status(200).send({
+                message : 'Category was updated successfully.'
+            })
+        })
+        .catch(err =>{
+            return res.status(500).send({
+                message: err
+            })
+        })
+    },
+    delete : (req, res) =>{
+        const {id, isDelete} = req.body;
+        db.category.update({isDelete: isDelete}, { where : {id : id} })
+        .then(()=>{
+            return res.status(200).send({
+                message : 'Category was deleted successfully.'
+            })
+        })
+        .catch(err =>{
+            return res.status(500).send({
+                message: err
+            })
+        })
+    }
 }
