@@ -1,4 +1,11 @@
 const db = require('../models/index')
+
+const date = new Date(Date.now());
+const year = date.getFullYear();
+const month = (date.getMonth() + 1).toString().padStart(2, '0');
+const day = date.getDate().toString().padStart(2, '0');
+const dateNow = `${year}-${month}-${day}`
+
 module.exports = (sequelize, Sequelize, DataTypes)=>{
     const Product = sequelize.define(
         "products",
@@ -10,7 +17,7 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
             },
             categoryID : {
                 type: DataTypes.STRING,
-                defaultValue : ''
+                defaultValue : null
             },
             product_name : {
                 type : DataTypes.STRING,
@@ -29,7 +36,8 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
                 defaultValue : 1
             },
             publication_date:{
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                defaultValue: dateNow
             },
             isDelete : {
                 type : DataTypes.BOOLEAN,

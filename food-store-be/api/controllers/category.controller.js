@@ -70,8 +70,11 @@ module.exports = {
     },
     update : (req, res) =>{
         const image = req.image ? req.image : '';
-        const {id, category_name} = req.body;
-        const newCategory = { category_name }
+        const category_name = req.body.category_name;
+        const id = req.params.id;
+        const newCategory = { 
+            category_name
+        }
         if(image!=''){
             newCategory.image = image
         }
@@ -92,13 +95,18 @@ module.exports = {
         const {id, isDelete} = req.body;
         db.category.update({isDelete: isDelete}, { where : {id : id} })
         .then(()=>{
-            return res.status(200).send({
-                message : 'Category was deleted successfully.'
-            })
+            if(isDelete=='false'){
+                return res.status(200).send({ message : 'The category has been successfully restored' })
+
+            }
+            else
+                return res.status(200).send({
+                    message : 'Category was deleted successfully.'
+                })
         })
         .catch(err =>{
             return res.status(500).send({
-                message: err
+                message: err.message
             })
         })
     }
