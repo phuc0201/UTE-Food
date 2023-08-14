@@ -2,7 +2,7 @@ const firebase = require('../config/firebase.config')
 module.exports = {
     uploadImgToFirebase : async (req, res, next)=>{
         if(req.method ==='POST' && !req.file) {
-            return res.status(400).send("Error: No files found")
+            return res.status(400).send("Error: image file not found")
         } 
         else if(req.method === 'PUT' && !req.file){
             next()

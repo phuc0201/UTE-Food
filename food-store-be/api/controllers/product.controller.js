@@ -1,14 +1,35 @@
 const db = require('../models/index');
+const { Sequelize } = require('sequelize')
 module.exports = {
-    findAll : (req, res) => {
-        db.product.findAll()
-        .then(data =>{
+    findAll : async (req, res) => {
+        await db.product.findAll()
+        .then(async (data) =>{
             if (!data) {
                 return res.status(400).send({
                     message: "Product not found!"
                 });
             }
-            return res.status(200).send(data);
+            for(let prod = 0; prod < data.length; prod ++){
+                let starRating = 0
+                let point = await db.product_reviews.findAll({
+                    where : {productID : data[prod].id},
+                    attributes: [ 
+                        [Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('starRating'), 'float')), 'starRating']
+                    ]
+                });
+                if(point[0].dataValues.starRating)
+                    starRating = point[0].dataValues.starRating 
+                let products = await db.product_images.findAll({ where : {productID : data[prod].id},
+                    attributes: { exclude: ["id", "productID"] }
+                })
+                let images = []
+                for(let img = 0; img < products.length; img++){
+                    images.push(products[img].image)
+                }
+                data[prod].dataValues.image = images
+                data[prod].dataValues.starRating = starRating
+            }
+            return res.status(200).send(data)   
         })
         .catch(err =>{
             return res.status(500).send({
@@ -55,18 +76,28 @@ module.exports = {
                 req.body.categoryID = null
             }
             await db.product.create(req.body)
-            .then(()=>{
-                return res.status(200).send({
-                    message: "Product was created successfully."
-
-                });
+            .then(async (product)=>{
+                await db.product_images.create({
+                    productID: product.id,
+                    image: req.image
+                })
+                .then(() => {
+                    return res.status(200).send({
+                        message: "Product was created successfully."
+    
+                    });
+                })
+                .catch(err => {
+                    return res.status(500).send({ message: err.message })
+                })
             })
-            .catch(err =>{
+            .catch(err => {
                 return res.status(500).send({
                     message: err.message || "Some error occurred while creating the Book."
                 });
             })
-            })
+            
+        })
         .catch(err=>{
             return res.status(500).send({
                 message : err.message
@@ -154,5 +185,40 @@ module.exports = {
                 message: err.message
             })
         })
-    }
+    },
+    addNewImage : async (req, res) =>{
+        db.product_images.create({
+            productID: req.body.productID,
+            image: req.image
+        })
+        .then(()=>{
+            return res.status(200).send({
+                message: 'add new image successfully'
+            })
+        })
+        .catch(err =>{
+            return res.status(500).send({
+                message: err.message
+            })
+        })
+    },
+    createReview: async (req, res) =>{
+        db.product_reviews.create(req.body)
+        .then(()=>{
+            return res.status(200).send({
+                message: "create review successfully"
+            })
+        })
+        .catch((err)=>{
+            return res.status(200).send({
+                message: err.message || "create review failed"
+            })
+        })
+    },
+    updateReview: async (req, res) =>{
+
+    },
+    deleteReview: async (req, res) =>{
+
+    },
 }

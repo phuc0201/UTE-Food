@@ -26,11 +26,15 @@ module.exports = (app)=>{
     //find by cateID
     router.get('/product/categories/:id', productController.findByCategoryID)
     //create
-    router.post('/product', productController.create);
+    router.post('/product', upload.single('file'), uploadImg.uploadImgToFirebase,productController.create);
     //update
     router.put('/product/:id',  productController.update);
     //delete 
     router.delete('/product', productController.delete)
+    // add new image
+    router.post('/product/add-new-image', upload.single('file'), uploadImg.uploadImgToFirebase, productController.addNewImage);
+    // create review
+    router.post('/product/review', productController.createReview);
     //add to category
     router.post('/categories/product/:id', productController.addToCategory)
     //remove from category

@@ -28,5 +28,7 @@ db.sequelize = sequelize;
 db.user = require("./user.model")(sequelize, Sequelize, DataTypes);
 db.category = require("./category.model")(sequelize, Sequelize, DataTypes);
 db.product = require("./product.model")(sequelize, Sequelize, DataTypes);
-
+db.product_images = require('./product_image.model')(sequelize, Sequelize, DataTypes);
+db.product_reviews = require('./product_review.model')(sequelize, Sequelize, DataTypes);
+db.cart = require('./cart.model')(sequelize, Sequelize, DataTypes);
 module.exports = db;
