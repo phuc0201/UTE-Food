@@ -1,4 +1,32 @@
 const db = require('../models/index');
+async function removeCartItem(req, res){
+    const cartItemID = req.body.cartItemID;
+    let cart_item = await db.cart.findByPk(cartItemID);
+    if(cart_item){
+        db.cart.destroy({
+            where : {
+                id : cartItemID
+            }
+        })
+        .then(async()=>{
+            let product = await db.product.findByPk(cart_item.productID)
+            product.increment('quantity', {by: cart_item.quantity})
+            return res.status(200).send({
+                message: 'Cart item was removed successfully!'
+            })
+        })
+        .catch(err => {
+            return res.status(500).send({
+                message: err.message
+            })
+        })
+    }
+    else{
+        return res.status(404).send({
+            message: "cart not found"
+        })
+    }
+}
 module.exports = {
     findByUID: (req, res)=>{
         db.cart.findAll({
@@ -52,17 +80,12 @@ module.exports = {
                 message: 'product not found'
             })
         }
-        else if(product.quantity - quantity < 0){
+        else if(parseInt(product.quantity) - parseInt(quantity) < 0){
             return res.status(400).send({
                 message: 'Insufficient quantity'
             })
         } 
-        else if(quantity <= 0){
-            return res.status(400).send({
-                message: "Quantity must be greater than zero!"
-            })
-        }
-        else if(!cart_item){
+        else if(!cart_item && quantity > 0){
             db.cart.create({
                 userID: req.UID,
                 productID: productID,
@@ -77,14 +100,30 @@ module.exports = {
                 return res.status(500).send({message: err.message})
             })
         }
-        else{
+        else if(cart_item){
             try {
-                await product.decrement('quantity', {by: quantity})
-                await cart_item.increment('quantity', {by: quantity})
-
-                return res.status(200).send({
-                    message: "add to cart successfully"
-                })
+                if(quantity <= 0){
+                    if(parseInt(cart_item.quantity) + parseInt(quantity) > 0){
+                        await cart_item.increment('quantity', {by: quantity});
+                        await product.decrement('quantity', {by: quantity})
+                        return res.status(200).send({
+                            message: "item was removed successfully!"
+                        })
+                    }
+                    else{
+                        req.body.cartItemID = cart_item.id;
+                        removeCartItem(req, res)
+                    }
+                    
+                }
+                else{
+                    await product.decrement('quantity', {by: quantity})
+                    await cart_item.increment('quantity', {by: quantity})
+    
+                    return res.status(200).send({
+                        message: "add to cart successfully"
+                    })
+                }
             } catch (error) {
                 return res.status(500).send({
                     message: 'add to card failed'
@@ -92,10 +131,14 @@ module.exports = {
             }
               
         }
+        else{
+            return res.status(400).send({
+                message: 'failed'
+            })
+        }
             
     },
     removeCartItem: async(req, res)=>{
-        const cartItemID = req.body.cartItemID;
-        
+        removeCartItem(req, res)
     }
 }

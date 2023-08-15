@@ -32,6 +32,7 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
                         product.decrement('quantity', {by: cart.quantity})
                     })
                 },
+
             }
         }
 
