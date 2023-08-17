@@ -3,7 +3,8 @@ const multer = require('multer');
 const user_controller = require('../controllers/user.controller')
 const categoryController = require('../controllers/category.controller')
 const productController = require('../controllers/product.controller')
-const uploadImg = require('../middlewares/uploadImg')
+const uploadImg = require('../middlewares/uploadImg');
+const orderController = require("../controllers/order.controller");
 const verify = require('../middlewares/auth').verifyToken_Admin
 const upload = multer({
     storage: multer.memoryStorage()
@@ -39,5 +40,8 @@ module.exports = (app)=>{
     router.post('/categories/product/:id', productController.addToCategory)
     //remove from category
     router.delete('/categories/product/:id', productController.removeFromCategory)
+
+    // ORDER
+    router.get('/order', orderController.getAllOrder)
     app.use('/admin', verify, router);
 }

@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const jwt = require('jsonwebtoken');
-const auth = require('../config/auth.config')
+const auth = require('../config/authToken.config')
 module.exports = {
     findAll : (req, res) => {
         db.user.findAll({ attributes: { exclude: ["password"] } })

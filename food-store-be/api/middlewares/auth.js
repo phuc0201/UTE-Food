@@ -1,4 +1,4 @@
-const auth = require('../config/auth.config')
+const auth = require('../config/authToken.config')
 const jwt = require('jsonwebtoken')
 module.exports = {
     verifyToken_Admin : (req, res, next) => {

@@ -2,6 +2,7 @@ const userController = require('../controllers/user.controller')
 const categoryController = require('../controllers/category.controller')
 const productController = require('../controllers/product.controller')
 const cartController = require('../controllers/cart.controller')
+const orderController = require('../controllers/order.controller')
 const verify = require('../middlewares/auth').verifyToken_User
 const router = require('express').Router()
 
@@ -23,5 +24,10 @@ module.exports = (app) =>{
     router.post('/cart', cartController.addToCart);
     // remove cart item
     router.delete('/cart', cartController.removeCartItem);
+
+    //ORDER
+    // create order
+    router.post('/order', orderController.create);
+    router.get('/order', orderController.getOrderByUID)
     app.use('', verify,router)
 }
