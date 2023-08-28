@@ -23,16 +23,6 @@ function Banner() {
                 </div>
             ))
         }
-        {/* <div>
-          <img src={banner1} alt="banner1" />
-        </div>
-        <div>
-          <img src={banner2} alt="banner2" />
-        </div>
-        <div>
-          <img src={banner3} alt="banner3" />
-        </div>
-         */}
       </Slider>
     );
 }

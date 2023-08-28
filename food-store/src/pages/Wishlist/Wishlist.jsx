@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { RiShoppingBasket2Line } from "react-icons/ri";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import products from '../../assets/fake-data/products'
@@ -36,17 +36,6 @@ const Wishlist=()=>{
 
     return(
         <div id="wishlist">
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
-            <WishlistItem/>
             <WishlistItem/>
         </div>
     )

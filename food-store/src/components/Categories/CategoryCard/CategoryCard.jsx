@@ -10,10 +10,10 @@ export default function CategoryCard(props){
                 <div className="categoryCard">
                         <div className="category-content">
                             <div className="category-image" style={{
-                                backgroundImage: `url(${props.category.category_image})`
+                                backgroundImage: `url(${props.category.image})`
                             }}></div>
                             <span className="category-name">{props.category.category_name}</span>
-                            <span className="category-quantityProduct">90 products</span>
+                            <span className="category-quantityProduct">{props.category.product_quantity} sản phẩm</span>
                         </div>
                     </div>
             </Link>

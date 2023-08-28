@@ -26,13 +26,20 @@ button{
   outline: none;
   border: none;
 }
-.MyApp{
-  max-width: 1200px;
-  margin: auto;
-  overflow: hidden;
+#user{
+  .MyApp{
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+  }
 }
 
-
+#admin{
+  height: 100vh;
+  .MyApp{
+    margin: auto;
+  }
+}
 a {
   text-decoration: none;
   color: unset;

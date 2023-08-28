@@ -1,0 +1,66 @@
+/* TableComponent.scss */
+.table-container {
+    margin: 0;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    th, td {
+        border: 1px solid #c0c4e46c;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f1eeee85;
+    }
+
+    tr:nth-child(even) {
+        background-color: #a7e2ec1e;
+    }
+
+    th, td {
+        &:first-child {
+            width: 20px; 
+        }
+        &:last-child{
+            width: 50px;
+        }
+    }
+    .action-buttons-container{
+        display: flex;
+        justify-content: flex-start; 
+        align-items: center;
+        .edit-button, .delete-button {
+            background-color: #007bff50;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .delete-button {
+            background-color: #f1959e8c;
+            margin-left: 5px;
+        }
+    }
+    .image{
+        width: 80px;
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .description{
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; 
+    }
+}

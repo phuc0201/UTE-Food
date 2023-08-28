@@ -1,87 +1,194 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import product from '../../assets/fake-data/products'
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import './cart.scss'
 import { Link } from "react-router-dom";
+import { endpoint } from "../../utils/data";
+import Cookies from "js-cookie";
+import {fetchCartItems} from '../../redux-store/cart/cart.thunks'
+import { setCartItems } from "../../redux-store/cart/cart.slice";
 const formatter = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
     minimumFractionDigits: 0
   });
 
-const CartItem=()=>{
-    const [quantity, setQuantity] = useState(1);
-    const Increase=()=>{
-        setQuantity(quantity+1)
+const CartItem=(props)=>{
+    const [quantity, setQuantity] = useState(props.product.quantity);
+    const handleQuantityChange = (price, newQuantity) => {
+        setQuantity(newQuantity);
+        props.onQuantityChange(price);
+    };
+    const handleIncrease = ()=>{
+        handleQuantityChange(props.product.price, quantity + 1)
+        const fetchData = async () => {
+            fetch(`${endpoint}/cart`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': Cookies.get('authToken'),
+                },
+                body: JSON.stringify({
+                    productID: props.product.productID,
+                    quantity: 1
+                }),
+            })
+            .then((response) => {
+                if(response.status===200){
+                    return response.json()
+                }
+            })
+            .then((data) => {})
+            .catch((error) => console.error(error));
+        };
+        fetchData();   
     }
-    const Decrease=()=>{
-        quantity > 1 ? setQuantity(quantity-1) : setQuantity(1)
+    const handleDecrease=()=>{
+        if(quantity > 1)
+            handleQuantityChange(-props.product.price, quantity - 1)
+        if(quantity === 1){
+            let element = document.getElementById(`${props.product.id}`)
+            element.parentNode.removeChild(element);
+            handleQuantityChange(-props.product.price, 0)
+        }
+        fetch(`${endpoint}/cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': Cookies.get('authToken'),
+            },
+            body: JSON.stringify({
+                productID: props.product.productID,
+                quantity: -1
+            }),
+        })
+        .then((response) => {
+            if(response.status===200){
+                return response.json()
+            }
+        })
+        .then((data) => {})
+        .catch((error) => console.error(error));
+    }
+    const RemoveProduct =()=>{
+        fetch(`${endpoint}/cart`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': Cookies.get('authToken'),
+            },
+            body: JSON.stringify({
+                cartItemID: props.product.id
+            }),
+        })
+        .then((response) => {
+            if(response.status===200){
+                return response.json()
+            }
+        })
+        .then((data) => {
+            let element = document.getElementById(`${props.product.id}`)
+            element.parentNode.removeChild(element);
+        })
+        .catch((error) => console.error(error));
     }
     return(
-        <tr>
+        <tr id={props.product.id}>
             <td style={{
                 cursor:'pointer'
             }}>
-                <AiOutlineCloseCircle className="cancel--icon"/>
+                <AiOutlineCloseCircle className="cancel--icon" onClick={RemoveProduct}/>
             </td>
             <td>
-                <div className="product-image">
-                    <img src={product[0].image01} alt="product image" height={70} width={70}/>
-                </div>
+                <Link to={`/product/${props.product.productID}`}>
+                    <div className="product-image" style={{
+                        width:70,
+                        height: 70
+                    }}>
+                        <img src={props.product.image} alt="product image" height={70} width={70}/>
+                    </div>
+                </Link>
             </td>
             <td>
-                <span className="product-name">Pizza</span>
+                <span className="product-name">{props.product.product_name}</span>
             </td>
             <td>
                 XL
             </td>
             <td>
                 <div className="product-price">
-                    {formatter.format(product[0].price)}
+                    {formatter.format(props.product.price)}
                 </div>
             </td>
             <td>
                 <div className="product-quantity-added">
-                    <button className="quantity--minus" onClick={Decrease}>-</button>
+                    <button className="quantity--minus" onClick={handleDecrease}>-</button>
                     <div className="quantity--number">{quantity}</div>
-                    <button className="quantity--plus" onClick={Increase}>+</button>
+                    <button className="quantity--plus" onClick={handleIncrease}>+</button>
                 </div>
             </td>
-            <td>
-                {formatter.format(product[0].price)}
+            <td className="total-price">
+                {formatter.format(props.product.price * quantity)}
             </td>
         </tr>
     )
 }
-const CartTotals = ()=>{
-    return(
-        <div className="cart-totals">
-            <h2>CART TOTALS</h2>
-            <div>
-                <div className="subtotal">
-                    <h5>Subtotal</h5>
-                    <span> {formatter.format(product[0].price)} </span>
-                </div>
-                <div className="delivery-fees">
-                    <h5>Delivery fees</h5>
-                    <span> {formatter.format(product[0].price)}</span>
-                </div>
-                <div className="total-price">
-                    <h5>Total</h5>
-                    <span> {formatter.format(product[0].price)} </span>
-                </div>
-                <Link to={`/checkout`}>
-                    <button className="checkout--button">
-                        Đặt hàng
-                    </button>
-                </Link>
-            </div>
-        </div>
-    );
-}
+
 const Cart = ()=>{
+    const cartItems = useSelector((state) => state.cart.products);
+    const totalPrice = useSelector((state) => state.cart.totalPrice);
+    const loading = useSelector((state) => state.cart.loading);
+    const dispatch = useDispatch();
+
+    const [subtotal, setSubtotal] = useState(totalPrice);
+    const updateSubtotal = (productPrice) => {
+        const updatedSubtotal = subtotal + productPrice;
+        setSubtotal(updatedSubtotal);
+    };
+
+    useEffect(() => {
+        dispatch(fetchCartItems())
+        if (totalPrice !== subtotal) {
+            setSubtotal(totalPrice);
+        }
+    }, [dispatch, totalPrice]);
+
+    const CartTotals = ()=>{
+        return(
+            <div className="cart-totals">
+                <h2>CART TOTALS</h2>
+                <div>
+                    <div className="subtotal">
+                        <h5>Subtotal</h5>
+                        <span> {formatter.format(subtotal)} </span>
+                    </div>
+                    <div className="delivery-fees">
+                        <h5>Delivery fees</h5>
+                        <span> {formatter.format(0)}</span>
+                    </div>
+                    <div className="total-price">
+                        <h5>Total</h5>
+                        <span> {formatter.format(subtotal)} </span>
+                    </div>
+                    <Link to={`/checkout`}>
+                        <button className="checkout--button">
+                            Đặt hàng
+                        </button>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+    if(loading){
+        return(
+            <div>
+                loading
+            </div>
+        )
+    }
+
     return(
         <div className="cart">
             <Container>
@@ -101,13 +208,20 @@ const Cart = ()=>{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <CartItem/>
+                                {
+                                    cartItems.map((product)=>(
+                                        <CartItem 
+                                            product={product}
+                                            onQuantityChange={updateSubtotal}
+                                        />
+                                    ))
+                                }
                                 </tbody>
                             </Table>
                         </div>
                     </Col>
                     <Col sm={12} md={12} lg={4}>
-                        <CartTotals/>
+                        <CartTotals subtotal = {subtotal}/>
                     </Col>
                 </Row>
             </Container>

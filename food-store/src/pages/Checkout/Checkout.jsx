@@ -1,7 +1,48 @@
-import React from "react";
+import React, {useState} from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col } from "react-bootstrap";
 import './checkout.scss'
+import formatter from '../../utils/FormatCurrency'
+import { fetchCartItems } from "../../redux-store/cart/cart.thunks";
+import { create_order } from "../../redux-store/order/order.thunks";
+import { useEffect } from "react";
 const Checkout = ()=>{
+    const cartItems = useSelector((state) => state.cart.products);
+    const totalPrice = useSelector((state) => state.cart.totalPrice);
+    const loading = useSelector((state) => state.cart.loading);
+    const [subtotal, setSubtotal] = useState(totalPrice);
+    const [orderData, setOrderData] = useState({});
+    const dispatch = useDispatch();
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setOrderData({
+            ...orderData,
+            [name]: value,
+        });
+    };
+    const hanldeSubmit = (e) => {
+        e.preventDefault()
+        if(orderData.full_name.trim()!='' && orderData.address.trim()!='' && orderData.phone_number.trim()!=''){
+            dispatch(create_order(orderData))
+        }
+        else{
+            alert('Vui lòng cung cấp đầy đủ thông tin giao hàng')
+        }
+    }
+    useEffect(() => {
+        dispatch(fetchCartItems())
+        if (totalPrice !== subtotal) {
+            setSubtotal(totalPrice);
+        }
+    }, [dispatch, totalPrice]);
+
+    if(loading){
+        return(
+            <div>
+                loading
+            </div>
+        )
+    }
     return(
         <form id='checkout'>
             <Container>
@@ -11,15 +52,35 @@ const Checkout = ()=>{
                             <h3>Billing details</h3>
                             <div className="form-gr fullname">
                                 <label htmlFor="fullname--input">Họ và tên</label>
-                                <input type="text" id='fullname--input' placeholder="Tên" />
+                                <input 
+                                    value={orderData.full_name} 
+                                    onChange={handleInputChange}
+                                    type="text" 
+                                    id='fullname--input'
+                                    placeholder="Tên" 
+                                    name="full_name" 
+                                />
                             </div>
                             <div className="form-gr address">
                                 <label htmlFor="address--input">Địa chỉ</label>
-                                <input type="text" id='address--input' placeholder="Địa chỉ" />
+                                <input 
+                                    value={orderData.address}
+                                    onChange={handleInputChange}
+                                    type="text"
+                                    id='address--input'
+                                    placeholder="Địa chỉ"
+                                    name="address"
+                                />
                             </div>
                             <div className="form-gr phonenumber">
                                 <label htmlFor="phonenumber--input">Số điện thoại</label>
-                                <input type="text" id='phonenumber--input' placeholder="Số điện thoại" />
+                                <input 
+                                    value={orderData.phone_number}
+                                    onChange={handleInputChange}
+                                    type="text" id='phonenumber--input'
+                                    placeholder="Số điện thoại"
+                                    name="phone_number"
+                                />
                             </div>
                         </div>
                     </Col>
@@ -34,28 +95,32 @@ const Checkout = ()=>{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="product-name">
-                                            Pizza 
-                                            <span className="product-quantity">
-                                                &nbsp; × 1
-                                            </span>
-                                        </td>
-                                        <td className="product-price">20000</td>
-                                    </tr>
+                                    {
+                                        cartItems.map((product)=>(
+                                            <tr>
+                                                <td className="product-name">
+                                                    {product.product_name} 
+                                                    <span className="product-quantity">
+                                                        &nbsp; × {product.quantity}
+                                                    </span>
+                                                </td>
+                                                <td className="product-price">{formatter.format(product.price*product.quantity)}</td>
+                                            </tr>
+                                        ))
+                                    }
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Subtotal</th>
-                                        <td className="subtotal">234566</td>
+                                        <td className="subtotal">{formatter.format(subtotal)}</td>
                                     </tr>
                                     <tr>
                                         <th>Delivery fees</th>
-                                        <td>34543</td>
+                                        <td>{formatter.format(0)}</td>
                                     </tr>
                                     <tr>
                                         <th>Total</th>
-                                        <td>834734</td>
+                                        <td>{formatter.format(subtotal)}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -81,10 +146,7 @@ const Checkout = ()=>{
                                     </li>
                                 </ul>
                             </div>
-                            <button className="placeOrder--button" onClick={(e)=>{
-                                alert("Place order sucessfully")
-                                e.preventDefault()
-                            }}>
+                            <button className="placeOrder--button" onClick={hanldeSubmit}>
                                 Đặt hàng
                             </button>  
                         </div> 

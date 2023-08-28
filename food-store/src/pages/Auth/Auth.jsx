@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";   
 import './auth.scss'
-import { Link, redirect  } from "react-router-dom";
+import { Link  } from "react-router-dom";
 import { endpoint } from "../../utils/data";
 import Cookies from "js-cookie";
 
@@ -29,7 +29,8 @@ export default function Auth(){
             })
                 .then(response => response.json())
                 .then((data) => {
-                    Cookies.set('authToken', data.authToken)
+                    const expires = 1
+                    Cookies.set('authToken', data.authToken, { expires })
                     window.location = "/"
                 })
                 .catch(error => console.error(error));

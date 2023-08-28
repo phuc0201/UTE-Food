@@ -4,7 +4,7 @@
     border-radius: 10px;
     border: 1px solid var(--border-color);
     background-color: #fff;
-    padding: 10px;
+    padding: 5px;
     .product__content{
         position: relative;
         margin-bottom: 10px;
@@ -21,13 +21,15 @@
             }
         }
         .product__img{
-            scale: 90%;
+            scale: 95%;
             position: relative;
             padding-bottom: 100%;
             background-position: center;
             background-repeat: no-repeat;
             background-size: auto 100%;
             margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
             transition: all ease .35s;
         }
         .product__title{
@@ -55,7 +57,7 @@
     &:hover{
         border-color: var(--main-color);
         .product__img{
-            scale: 105%;
+            scale: 100%;
         }
 
     }

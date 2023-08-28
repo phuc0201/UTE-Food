@@ -1,9 +1,8 @@
-import React, { useState }  from "react";
+import React, { useState , useEffect}  from "react";
 import './productDetail.scss'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import products from '../../assets/fake-data/products.js'
 import { Container, Row, Col } from "react-bootstrap";
 import { Tabs, Tab } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
@@ -11,14 +10,10 @@ import StarRatings from 'react-star-ratings';
 import ProductCard from "../../components/Product/ProductCard/ProductCard";
 import Review from "../../components/Review/Review";
 import formatter from '../../utils/FormatCurrency.js'
+import { endpoint } from "../../utils/data";
+import Cookies from "js-cookie";
 
-const RelatedProducts = ()=>{
-    // const productPerPage = 4;
-    // const visitedPage = productPerPage;
-    // const displayPage = products.slice(
-    //     visitedPage,
-    //     visitedPage + productPerPage
-    // );
+const RelatedProducts = (props)=>{
     var settings = {
         infinite: false,
         slidesToShow: 5,
@@ -41,12 +36,22 @@ const RelatedProducts = ()=>{
               {
                 breakpoint: 480,
                 settings: {
-                  slidesToShow: 2,
-                  slidesToScroll: 2
+                    infinite: true,
+                    slidesToShow: 2,
+                    slidesToScroll: 2
                 }
               }
             ]
     }
+    const [products, setProducts] = useState([])
+    useEffect(() => {
+        fetch(`${endpoint}/product/categories/${props.id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setProducts(data.products);
+          })
+          .catch((error) => console.error(error));
+      }, [props.id]);
     return(
         <div className="product-related">
             <Slider {...settings}>
@@ -65,7 +70,6 @@ const RelatedProducts = ()=>{
 export default function ProductDetail(){
     window.scrollTo(0, 0);
     const { id } = useParams();
-    const product = products.find((product) => product.id === id);
     const [quantity, setQuantity] = useState(1);
     const Increase=()=>{
         setQuantity(quantity+1)
@@ -73,20 +77,55 @@ export default function ProductDetail(){
     const Decrease=()=>{
         quantity > 1 ? setQuantity(quantity-1) : setQuantity(1)
     }
+    const [product, setProduct] = useState({});
+    const addToCart = ()=>{
+        fetch(`${endpoint}/cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': Cookies.get('authToken'),
+            },
+            body: JSON.stringify({
+                productID: id,
+                quantity: quantity
+            }),
+        })
+        .then((response) => {
+            if(response.status===200){
+                return response.json()
+            }
+        })
+        .then((data) => {
+            alert(data.message)
+        })
+        .catch((error) => console.error(error));
+    }
+    useEffect(() => {
+      fetch(`${endpoint}/product/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setProduct(data);
+        })
+        .catch((error) => console.error(error));
+    }, [id]);
+    let image;
+    if(!product.image){ image = '' }
+    else image = product.image[0]
+
     return(
         <Container className="product-detail">
             <Row>
                 <Col sm='12' md='6' lg='6'>
                     <div className="product-image" style={{
-                        backgroundImage:`url(${product.image01})`
+                        backgroundImage:`url(${image})`
                     }}>
                     </div>
                 </Col>
                 <Col sm='12' md='6' lg='6'>
                     <div className="product-content">
-                        <h1>{product.title}</h1>
+                        <h1>{product.product_name}</h1>
                         <StarRatings
-                            rating={3.5}
+                            rating={product.starRating}
                             starRatedColor="#f7c942"
                             numberOfStars={5}
                             starDimension="20px"
@@ -100,7 +139,7 @@ export default function ProductDetail(){
                                 <div className="quantity--number">{quantity}</div>
                                 <button className="quantity--plus" onClick={Increase}>+</button>
                             </div>
-                            <button className="product-addToCart--button">ADD TO CART</button>
+                            <button className="product-addToCart--button" onClick={addToCart}>ADD TO CART</button>
                         </div>
                         <div class="product-extra-info">
                             <div>
@@ -122,7 +161,7 @@ export default function ProductDetail(){
                 <Tabs defaultActiveKey="description" className="tab-list">
                     <Tab eventKey="description" title="Description" className="tab-item">
                         <div>
-                            {product.desc}
+                            {product.description}
                         </div>
                     </Tab>
                     <Tab eventKey="review" title="Review" className="tab-item">
@@ -131,7 +170,7 @@ export default function ProductDetail(){
                 </Tabs>
             </Row>
             <Row> 
-                <RelatedProducts/>
+                <RelatedProducts id={product.categoryID}/>
             </Row>
         </Container>
     )

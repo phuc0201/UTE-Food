@@ -1,0 +1,48 @@
+/* Sidebar.css */
+.sidebar {
+    height: calc(100vh - 72px);
+    width: 250px;
+    position: sticky;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+    color: #fff;
+    transition: left 0.3s;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba($color: #000000, $alpha: 0.1);
+    button {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
+      
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+            color: black;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            cursor: pointer;
+            &:hover{
+                background-color: #b8b3b321;
+            }
+        }
+        li.active{
+            color: white;
+            background-color: #4070f3;
+        }
+    }
+    
+  }
+  
+  
+  
+  /* Add more CSS for styling your sidebar as needed */
+  

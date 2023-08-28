@@ -35,7 +35,6 @@ export default function Review(){
         )
     }
     const { id } = useParams();
-    const product = products.find((product) => product.id === id);
     return (
     <div id="review">
         <div id="my-review">
@@ -77,7 +76,7 @@ export default function Review(){
                             starSpacing="1px"/>
                         </div>
                         <div className="content">
-                            {product.desc}
+                           
                         </div>
                     </div>
                 </div>

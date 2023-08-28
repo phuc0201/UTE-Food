@@ -17,19 +17,24 @@ const Login = ()=>{
         )
     }
     return(
-        <div className="login-successful nav__right-item active"></div>
+        <Link to={'/my-account/info'} className="nav__right-item">
+            <div className="login-successful active">
+                <img src="https://www.pngarts.com/files/6/User-Avatar-in-Suit-PNG.png" alt="avatar" width={40} height={40} className='user-avatar'/>
+            </div>
+        </Link>
     )
 }
 const Header = () => {
-    let navigate = useNavigate();
     return(
         <div className="header">    
             <div className="nav__wrapper">
                 <div className="nav__left">
-                    <div className="logo" onClick={() => navigate("/")}>
-                        <img src={logo} alt="logo" />
-                        <h5>UTE Food</h5>
-                    </div>
+                    <Link to={'/'}>
+                        <div className="logo">
+                            <img src={logo} alt="logo" />
+                            <h5>UTE Food</h5>
+                        </div>
+                    </Link>
                 </div>
                 <div className="nav__middle">
                     <input placeholder="search"/>
