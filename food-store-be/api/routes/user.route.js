@@ -7,27 +7,29 @@ const verify = require('../middlewares/auth').verifyToken_User
 const router = require('express').Router()
 
 module.exports = (app) =>{
-    router.get("/profile", userController.findByid);
-    router.put('/profile', userController.updateProfile);
+    router.get("/profile", verify, userController.findByid);
+    router.put('/profile', verify, userController.updateProfile);
     //CATEGORY
     router.get("/categories", categoryController.findAll);
     router.get("/categories/:id", categoryController.findById);
     //PRODUCT
     router.get('/product', productController.findAll);
+    //find product by id
+    router.get('/product/:id', productController.findById)
     //find by cateID
     router.get('/product/categories/:id', productController.findByCategoryID);
 
     // CART
     // get cart
-    router.get('/cart', cartController.findByUID);
+    router.get('/cart', verify, cartController.findByUID);
     //add to cart
-    router.post('/cart', cartController.addToCart);
+    router.post('/cart', verify, cartController.addToCart);
     // remove cart item
-    router.delete('/cart', cartController.removeCartItem);
+    router.delete('/cart', verify, cartController.removeCartItem);
 
     //ORDER
     // create order
-    router.post('/order', orderController.create);
-    router.get('/order', orderController.getOrderByUID)
-    app.use('', verify,router)
+    router.post('/order', verify, orderController.create);
+    router.get('/order', verify, orderController.getOrderByUID)
+    app.use('', router)
 }

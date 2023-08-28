@@ -8,12 +8,7 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
                 defaultValue: Sequelize.UUIDV4,
                 primaryKey: true
             },
-            userID: {
-                type: DataTypes.STRING
-            },
-            productID:{
-                type: DataTypes.STRING
-            },
+
             quantity: {
                 type: DataTypes.INTEGER,
                 defaultValue: 1

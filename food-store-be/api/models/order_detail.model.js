@@ -7,12 +7,6 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
                 defaultValue: Sequelize.UUIDV4,
                 primaryKey: true
             },
-            orderID: {
-                type: DataTypes.STRING
-            },
-            productID: {
-                type: DataTypes.STRING
-            },
             quantity: {
                 type: DataTypes.INTEGER
             }

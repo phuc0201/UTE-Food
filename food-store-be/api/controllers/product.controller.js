@@ -40,7 +40,27 @@ module.exports = {
     },
     findById : (req, res) =>{
         db.product.findByPk(req.params.id)
-        .then(data =>{
+        .then(async(data) =>{
+            let starRating = 0
+                let point = await db.product_reviews.findAll({
+                    where : {productID : data.id},
+                    attributes: [ 
+                        [Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('starRating'), 'float')), 'starRating']
+                    ]
+                });
+                if(point[0].dataValues.starRating)
+                    starRating = point[0].dataValues.starRating 
+                let products = await db.product_images.findAll({ where : {productID : data.id},
+                    attributes: { exclude: ["id", "productID"] }
+                })
+                let images = []
+                for(let img = 0; img < products.length; img++){
+                    images.push(products[img].image)
+                }
+                if(images.length <= 0)
+                    images.push("")
+                data.dataValues.image = images
+                data.dataValues.starRating = starRating
             return res.status(200).send(data)
         })
         .catch(err=>{
@@ -51,8 +71,34 @@ module.exports = {
     },
     findByCategoryID: (req, res)=>{
         db.product.findAll({where : {categoryID : req.params.id}})
-        .then(data=>{
-            return res.status(200).send(data);
+        .then(async(data)=>{
+            let price_max = 0;
+            for(let prod = 0; prod < data.length; prod ++){
+                let starRating = 0
+                let point = await db.product_reviews.findAll({
+                    where : {productID : data[prod].id},
+                    attributes: [ 
+                        [Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('starRating'), 'float')), 'starRating']
+                    ]
+                });
+                if(data[prod].price > price_max)
+                    price_max = data[prod].price
+                if(point[0].dataValues.starRating)
+                    starRating = point[0].dataValues.starRating 
+                let products = await db.product_images.findAll({ where : {productID : data[prod].id},
+                    attributes: { exclude: ["id", "productID"] }
+                })
+                let images = []
+                for(let img = 0; img < products.length; img++){
+                    images.push(products[img].image)
+                }
+                data[prod].dataValues.image = images
+                data[prod].dataValues.starRating = starRating
+            }
+            return res.status(200).send({
+                price_max: price_max,
+                products: data
+            });
         })
         .catch(err=>{
             return res.status(500).send({

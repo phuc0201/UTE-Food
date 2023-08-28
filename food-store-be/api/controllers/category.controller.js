@@ -4,13 +4,19 @@ const db = require('../models/index');
 module.exports = {
     findAll : (req, res) => {
         db.category.findAll()
-        .then(data =>{
+        .then(async(data) => {
             if (!data) {
                 return res.status(400).send({
                     message: "Category not found!"
                 });
             }
-            return res.status(200).send(data);
+            else{
+                for( let item = 0; item  < data.length; item++ ){
+                    let quantityOfProduct = await db.product.findAndCountAll({where : {categoryID : data[item].id}});
+                    data[item].dataValues.product_quantity = quantityOfProduct ? quantityOfProduct.count : 0
+                }
+                return res.status(200).send(data);
+            }
         })
         .catch(err =>{
             return res.status(500).send({
@@ -40,7 +46,6 @@ module.exports = {
 
         const category = {
             category_name: req.body.category_name,
-            description: req.body.description,
             image: req.image
         };
 

@@ -8,10 +8,6 @@ module.exports =  (sequelize, Sequelize, DataTypes)=>{
                 defaultValue: Sequelize.UUIDV4,
                 primaryKey: true
             },
-            productID: {
-                type: DataTypes.STRING,
-                defaultValue: null
-            },
             image : {
                 type: DataTypes.STRING,
                 defaultValue: ''

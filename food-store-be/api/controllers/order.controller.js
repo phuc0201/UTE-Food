@@ -70,10 +70,41 @@ module.exports = {
         db.order.findAll({
             where : {
                 userID: req.UID
-            }
+            },
+            include: [
+                {
+                  model: db.order_detail,
+                  include: [
+                    {
+                        model: db.product,
+                        attributes: ['product_name', 'price'],
+                        include: [
+                            {
+                                model: db.product_images,
+                                attributes: ['image']
+                            }
+                        ]
+                    }
+                  ]
+                },
+            ],
         })
-        .then(data => {
-            return res.status(200).send(data)
+        .then(orders => {
+
+            const ordersWithTotalPrice = orders.map(order => {
+                const totalOrderPrice = order.order_details.reduce((total, orderDetail) => {
+                    const productPrice = orderDetail.product.price;
+                    const quantity = orderDetail.quantity;
+                    return total + productPrice * quantity;
+                }, 0);
+
+                return {
+                    ...order.toJSON(),
+                    totalOrderPrice
+                };
+            });
+
+            return res.status(200).send(ordersWithTotalPrice);
         })
         .catch(err => {
             return res.status(500).send(err.message)

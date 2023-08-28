@@ -33,4 +33,34 @@ db.product_reviews = require('./product_review.model')(sequelize, Sequelize, Dat
 db.cart = require('./cart.model')(sequelize, Sequelize, DataTypes);
 db.order = require('./order.model')(sequelize, Sequelize, DataTypes);
 db.order_detail = require('./order_detail.model')(sequelize, Sequelize, DataTypes);
+
+
+//RELATIONSHIP
+db.order.hasMany(db.order_detail, { foreignKey: 'orderID' });
+db.order_detail.belongsTo(db.order, { foreignKey: 'orderID' });
+
+db.user.hasMany(db.cart, { foreignKey: 'userID' });
+db.cart.belongsTo(db.user, { foreignKey: 'userID' });
+
+db.user.hasMany(db.order, { foreignKey: 'userID' });
+db.order.belongsTo(db.user, { foreignKey: 'userID' });
+
+db.user.hasMany(db.product_reviews, { foreignKey: 'userID' });
+db.product_reviews.belongsTo(db.user, { foreignKey: 'userID' });
+
+db.category.hasMany(db.product, {foreignKey: 'categoryID'})
+db.product.belongsTo(db.category, {foreignKey: 'categoryID'})
+
+db.product.hasMany(db.order_detail, { foreignKey: 'productID' });
+db.order_detail.belongsTo(db.product, { foreignKey: 'productID' });
+
+db.product.hasMany(db.cart, { foreignKey: 'productID' });
+db.cart.belongsTo(db.product, { foreignKey: 'productID' });
+
+db.product.hasMany(db.product_images, { foreignKey: 'productID' });
+db.product_images.belongsTo(db.product, { foreignKey: 'productID' });
+
+db.product.hasMany(db.product_reviews, { foreignKey: 'productID' });
+db.product_reviews.belongsTo(db.product, { foreignKey: 'productID' });
+
 module.exports = db;

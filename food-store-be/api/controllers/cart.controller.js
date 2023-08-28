@@ -43,7 +43,7 @@ module.exports = {
                 })  
             }
             else{
-                let product_name, price;
+                let product_name, price, totalPrice=0;
                 for(let item = 0; item < data.length; item++){
                     await db.product.findByPk(data[item].dataValues.productID)
                     .then(product=>{
@@ -53,13 +53,16 @@ module.exports = {
                     let product_images = await db.product_images.findAll({ where : {productID : data[item].dataValues.productID},
                         attributes: { exclude: ["id", "productID"] }
                     })
-        
+                    totalPrice+= price*data[item].quantity
                     data[item].dataValues.product_name = product_name;
                     data[item].dataValues.price = price;
                     data[item].dataValues.image = product_images.length > 0 ? data[item].dataValues.image = product_images[0].dataValues.image : ''
                 }
                 
-                return res.status(200).send(data)
+                return res.status(200).send({
+                    totalPrice: totalPrice,
+                    products: data
+                })
             }
         })
         .catch(err =>{

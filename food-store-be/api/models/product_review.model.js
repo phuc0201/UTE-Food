@@ -8,14 +8,6 @@ module.exports =  (sequelize, Sequelize, DataTypes)=>{
                 defaultValue: Sequelize.UUIDV4,
                 primaryKey: true
             },
-            productID: {
-                type: DataTypes.STRING,
-                defaultValue: null
-            },
-            userID: {
-                type: DataTypes.STRING,
-                defaultValue: null
-            },
             starRating : {
                 type: DataTypes.STRING,
                 defaultValue: 0

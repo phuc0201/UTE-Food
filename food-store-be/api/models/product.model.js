@@ -13,10 +13,6 @@ module.exports = (sequelize, Sequelize, DataTypes)=>{
                 defaultValue: Sequelize.UUIDV4,
                 primaryKey: true
             },
-            categoryID : {
-                type: DataTypes.STRING,
-                defaultValue : null
-            },
             product_name : {
                 type : DataTypes.STRING,
                 defaultValue : 'product name'

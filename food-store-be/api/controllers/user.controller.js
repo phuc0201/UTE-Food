@@ -119,15 +119,12 @@ module.exports = {
     changePassword : async (req,res)=>{
         const { oldPassword, newPassword } = req.body;
         const userId = req.UID;
-      
-        // Check if required data is provided
         if (!oldPassword || !newPassword) {
-          return res.status(400).send({ message: "Old password and new password are required." });
+            return res.status(400).send({ message: "Old password and new password are required." });
         }
       
         try 
         {
-            // Find user by id from database
             const user = await db.user.findByPk(userId);
       
             if (!user) {
