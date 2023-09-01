@@ -5,6 +5,7 @@ const categoryController = require('../controllers/category.controller')
 const productController = require('../controllers/product.controller')
 const uploadImg = require('../middlewares/uploadImg');
 const orderController = require("../controllers/order.controller");
+const dashboardController = require("../controllers/dashboard.controller");
 const verify = require('../middlewares/auth').verifyToken_Admin
 const upload = multer({
     storage: multer.memoryStorage()
@@ -43,5 +44,8 @@ module.exports = (app)=>{
 
     // ORDER
     router.get('/order', orderController.getAllOrder)
+    //Dashboard
+    router.get('/dashboard', dashboardController.dashboard)
+
     app.use('/admin', verify, router);
 }

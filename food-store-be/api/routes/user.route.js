@@ -31,5 +31,6 @@ module.exports = (app) =>{
     // create order
     router.post('/order', verify, orderController.create);
     router.get('/order', verify, orderController.getOrderByUID)
+
     app.use('', router)
 }
