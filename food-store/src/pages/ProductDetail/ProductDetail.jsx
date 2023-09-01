@@ -113,7 +113,7 @@ export default function ProductDetail(){
     else image = product.image[0]
 
     return(
-        <Container className="product-detail">
+        <Container id="product-detail">
             <Row>
                 <Col sm='12' md='6' lg='6'>
                     <div className="product-image" style={{

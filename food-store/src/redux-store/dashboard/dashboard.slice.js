@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const categorySlice = createSlice({
-  name: 'category',
+const dashboardSlice = createSlice({
+  name: 'dashboard',
   initialState: {
-    category: [],
+    data: [],
     loading: false,
     error: null
   },
   reducers: {
-    setCategories: (state, action)=>{
-      state.category = action.payload;
+    setData: (state, action)=>{
+      state.data = action.payload;
     },
     setLoading: (state, action) => {
         state.loading = action.payload;
@@ -20,5 +20,5 @@ const categorySlice = createSlice({
   },
 });
 
-export const { setCategories, setLoading, setError } = categorySlice.actions;
-export default categorySlice.reducer;
+export const { setData, setLoading, setError } = dashboardSlice.actions;
+export default dashboardSlice.reducer;
