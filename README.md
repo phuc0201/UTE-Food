@@ -7,6 +7,10 @@ Hướng dẫn chạy ứng dụng
 - Để bắt đầu chạy ứng dụng sử dụng lệnh npm start
 
 ![erd](https://github.com/phuc0201/UTE-Food/assets/96382380/bf4897e7-c95d-45f4-9211-413626d39ba2)
+Admin:
+![dashboard](https://github.com/phuc0201/UTE-Food/assets/96382380/a93f3b60-590a-49ef-94c3-71a13d50caa8)
+![productmanagement](https://github.com/phuc0201/UTE-Food/assets/96382380/8e0dfc03-1476-4736-aaa5-1ad5631459fa)
+Các trang quản lý như order, category.. tương tự trang quản product
 User:
 ![auth](https://github.com/phuc0201/UTE-Food/assets/96382380/1b991a68-3424-4a4d-81fa-90b63b56023b)
 ![home](https://github.com/phuc0201/UTE-Food/assets/96382380/21f1cb7f-0ec4-49ca-a306-4eaca0a52693)
@@ -18,4 +22,4 @@ User:
 ![oldorder](https://github.com/phuc0201/UTE-Food/assets/96382380/24872c61-e25c-49e7-ac5d-9f3423ef8227)
 ![changepassword](https://github.com/phuc0201/UTE-Food/assets/96382380/b4f5d89a-1cdb-4157-b02a-10b5f3c8c79f)
 
-Admin:
+
